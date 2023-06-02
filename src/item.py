@@ -1,3 +1,5 @@
+import csv, pathlib
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -13,10 +15,27 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
         self.all.append(self)
+
+    @property
+    def name(self):
+        """
+        Getter для __name
+        """
+        return self.__name
+    @name.setter
+    def name(self,new_name):
+        """
+        Setter для __name и проверка на длину названия(мение 10 символов)
+        """
+        if len(new_name) <= 10:
+            self.__name = new_name
+        else:
+            print("Exception: Длина наименования товара превышает 10 символов.")
+
 
     def calculate_total_price(self) -> float:
         """
@@ -31,3 +50,22 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
+
+    @staticmethod
+    def string_to_number(number:str):
+        """
+        Statcimethod: ковертирует строку в целое число
+        """
+        return int(float(number))
+
+    @classmethod
+    def instantiate_from_csv(cls):
+        """
+        Classmethod: загружает список товаров из CSV файла и создает экземплры класса на каждый товар
+        """
+        path = pathlib.Path(__file__).parent.parent / 'src' / 'items.csv'Add
+        cls.all.clear()
+        with open(path, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                Item(row['name'], row['price'], row['quantity'])
