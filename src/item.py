@@ -63,7 +63,7 @@ class Item:
         """
         Classmethod: загружает список товаров из CSV файла и создает экземплры класса на каждый товар
         """
-        path = pathlib.Path(__file__).parent.parent / 'src' / 'items.csv'Add
+        path = pathlib.Path(__file__).parent.parent / 'src' / 'items.csv'
         cls.all.clear()
         with open(path, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
