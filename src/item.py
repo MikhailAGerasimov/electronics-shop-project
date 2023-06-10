@@ -1,5 +1,6 @@
 import csv, pathlib
 
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -20,14 +21,21 @@ class Item:
         self.quantity = quantity
         self.all.append(self)
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.__name}"
+
     @property
     def name(self):
         """
         Getter для __name
         """
         return self.__name
+
     @name.setter
-    def name(self,new_name):
+    def name(self, new_name):
         """
         Setter для __name и проверка на длину названия(мение 10 символов)
         """
@@ -35,7 +43,6 @@ class Item:
             self.__name = new_name
         else:
             print("Exception: Длина наименования товара превышает 10 символов.")
-
 
     def calculate_total_price(self) -> float:
         """
@@ -52,7 +59,7 @@ class Item:
         self.price *= self.pay_rate
 
     @staticmethod
-    def string_to_number(number:str):
+    def string_to_number(number: str):
         """
         Statcimethod: ковертирует строку в целое число
         """
