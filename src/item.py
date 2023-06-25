@@ -1,4 +1,5 @@
 import csv, pathlib
+from src.InstantiateCSVError import FileNotFoundError, InstantiateCSVError
 
 
 class Item:
@@ -77,8 +78,16 @@ class Item:
         Classmethod: загружает список товаров из CSV файла и создает экземплры класса на каждый товар
         """
         path = pathlib.Path(__file__).parent.parent / 'src' / 'items.csv'
-        cls.all.clear()
-        with open(path, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                Item(row['name'], row['price'], row['quantity'])
+        if path.is_file() == False:
+            raise FileNotFoundError
+        else:
+            cls.all.clear()
+            with open(path, newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                ncol = len(reader.fieldnames)
+                if ncol != 3:
+                    raise InstantiateCSVError
+                else:
+                    for row in reader:
+                        Item(row['name'], row['price'], row['quantity'])
+
